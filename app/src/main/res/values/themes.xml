@@ -22,4 +22,7 @@
     <style name="Theme.MoGra.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.MoGra.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight" />
+
 </resources>

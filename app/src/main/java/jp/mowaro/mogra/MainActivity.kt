@@ -9,28 +9,33 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import androidx.appcompat.app.AlertDialog
 import jp.mowaro.mogra.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        try {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+            initSpinner(R.id.orderSpinner, R.array.orderItems)
+            initSpinner(R.id.orientSpinner, R.array.autoOrientItems)
 
-        setSupportActionBar(binding.toolbar)
-
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+        } catch (e: java.lang.Exception) {
+            AlertDialog.Builder(this)
+                .setTitle("Exception")
+                .setMessage(e.message)
+                .setPositiveButton("ok") { dialog, which ->
+                    // 何もしない
+                }
+                .show()
         }
     }
 
@@ -54,5 +59,33 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
+    }
+
+    /**
+     * スピナ初期設定
+     *
+     * 参考：
+     * https://codeforfun.jp/android-studio-how-to-customize-spinner/
+     * https://akira-watson.com/android/kotlin/spinner-simple.html
+     *
+     * @param view 設定するスピナのviewId
+     * @param itemsArray スピナに設定するアイテムのResourceId
+     */
+    private fun initSpinner(view: Int, itemsArray: Int) {
+        val spinner = findViewById<Spinner>(view)
+        val adapter: ArrayAdapter<String> = ArrayAdapter(this,R.layout.custom_spinner, resources.getStringArray(itemsArray))
+        adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown)
+        spinner.adapter = adapter
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedItem: String = spinner.selectedItem as String
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                val selectedItem: String = spinner.selectedItem as String
+            }
+        }
+
     }
 }

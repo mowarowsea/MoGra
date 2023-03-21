@@ -5,8 +5,25 @@
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
+    <string name="showDialog">\.\.\.</string>
     <string name="previous">Previous</string>
+    <string name="targetDirectory">ディレクトリ</string>
+    <string name="orderBy">並び順</string>
+    <string name="autoOrient">自動回転</string>
+    <string name="start">start</string>
+    <string-array name="orderItems">
+        <item name="Random">ランダム</item>
+        <item name="DateAsc">日付順（昇順）</item>
+        <item name="DateDesc">日付順（降順）</item>
+        <item name="NameAsc">名前順（昇順）</item>
+        <item name="NameDesc">名前順（降順）</item>
+    </string-array>
+    <string-array name="autoOrientItems">
+        <item name="None">自動回転なし</item>
+        <item name="HorizontallyLeft90">横向き（縦長は左90度回転）</item>
+        <item name="HorizontallyRight90">横向き（縦長は右90度回転）</item>
+        <item name="VerticallyLeft90">縦向き（横長は左90度回転）</item>
+        <item name="VerticallyRight90">縦向き（横長は右90度回転）</item>
+    </string-array>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>
