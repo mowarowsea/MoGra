@@ -1,7 +1,5 @@
 package jp.mowaro.mogra
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,8 +15,7 @@ import jp.mowaro.mogra.databinding.FragmentFirstBinding
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class FirstFragment : Fragment() {
-    private lateinit var preference: SharedPreferences
-    private var preferencesName: String = "settings"
+    private var setting: Setting = Setting(requireContext())
 
     private var _binding: FragmentFirstBinding? = null
 
@@ -33,10 +30,9 @@ class FirstFragment : Fragment() {
 
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
 
-        initSpinner(binding.spnOrderBy, R.array.orderItems)
-        initSpinner(binding.spnOrient, R.array.autoOrientItems)
+        initSpinner(binding.spnOrderBy, R.array.order_by)
+        initSpinner(binding.spnOrient, R.array.auto_orient)
 
-        preference = requireContext().getSharedPreferences(preferencesName, Context.MODE_PRIVATE)
         readPreference()
 
         return binding.root
@@ -81,17 +77,36 @@ class FirstFragment : Fragment() {
         }
     }
 
+    /**
+     * 設定書き込み
+     */
     private fun writePreference() {
-        val edit = preference.edit()
-        edit.putInt(R.id.spnOrderBy.toString(), binding.spnOrderBy.selectedItemPosition)
-        edit.putInt(R.id.spnOrient.toString(), binding.spnOrient.selectedItemPosition)
-        edit.putString(R.id.txtDirectory.toString(), binding.txtDirectory.text.toString())
-        edit.apply()
+        setting.orderBy = binding.spnOrderBy.selectedItem.toString()
+        setting.orient = binding.spnOrient.selectedItem.toString()
+        setting.directory = binding.txtDirectory.text.toString()
+        setting.commit()
     }
+
+    /**
+     * 設定読み込み
+     */
     private fun readPreference() {
-        binding.spnOrderBy.setSelection(preference.getInt(R.id.spnOrderBy.toString(), 0))
-        binding.spnOrient.setSelection(preference.getInt(R.id.spnOrient.toString(), 0))
-        binding.txtDirectory.text = preference.getString(R.id.txtDirectory.toString(), "")
+        setSelectionByText(binding.spnOrderBy, setting.orderBy)
+        setSelectionByText(binding.spnOrient, setting.orient)
+        binding.txtDirectory.text = setting.directory
+    }
+
+    /**
+     * 項目名でスピナを選択する
+     * 参考：https://qiita.com/shinmai333/items/9d02f72c89652af9c4b0
+     */
+    private fun setSelectionByText(spinner: Spinner, itemText: String?) {
+        for (i in 0 until spinner.adapter.count) {
+            if (spinner.adapter.getItem(i) == itemText) {
+                spinner.setSelection(i)
+                return
+            }
+        }
     }
 
 }
