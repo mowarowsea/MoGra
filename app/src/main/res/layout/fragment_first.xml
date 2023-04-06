@@ -24,7 +24,7 @@
             android:id="@+id/lblDirectory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/targetDirectory"
+            android:text="@string/target_directory"
             android:textSize="@dimen/textViewFontSize" />
 
         <LinearLayout
@@ -42,7 +42,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="@dimen/fab_margin"
                 android:layout_weight="1"
-                android:text="@string/targetDirectory"
+                android:text="@string/target_directory"
                 android:textSize="@dimen/textViewFontSize" />
 
             <Button
@@ -50,14 +50,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="clip_horizontal"
-                android:text="@string/showDialog" />
+                android:text="@string/show_dialog" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/lblOrderBy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/orderBy"
+            android:text="@string/order_by"
             android:textSize="@dimen/textViewFontSize" />
 
         <Spinner
@@ -65,14 +65,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/fab_margin"
-            android:contentDescription="@string/orderBy"
+            android:contentDescription="@string/order_by"
             android:minHeight="@dimen/controlHeight" />
 
         <TextView
             android:id="@+id/lblOrient"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/autoOrient"
+            android:text="@string/auto_orient"
             android:textSize="@dimen/textViewFontSize" />
 
         <Spinner
@@ -80,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/fab_margin"
-            android:contentDescription="@string/autoOrient"
+            android:contentDescription="@string/auto_orient"
             android:minHeight="@dimen/controlHeight" />
 
         <Button

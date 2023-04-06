@@ -1,21 +1,28 @@
 package jp.mowaro.mogra
 
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import jp.mowaro.mogra.databinding.FragmentFirstBinding
+import layout.FileSelectionDialog
+import java.io.File
+
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment() {
-    private var setting: Setting = Setting(requireContext())
+class FirstFragment : Fragment(), FileSelectionDialog.OnFileSelectListener {
+    private lateinit var setting: Setting
 
     private var _binding: FragmentFirstBinding? = null
 
@@ -41,14 +48,46 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         binding.btnStart.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            val activity: Activity = context as Activity
+            if (PermissionGetter().isAllowedManageExternalStorage(activity)) {
+                findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            } else {
+                AlertDialog.Builder(context)
+                    .setMessage("権限がないよ")
+                    .setPositiveButton("OK") { _, _ -> return@setPositiveButton }
+                    .create()
+            }
+        }
+        binding.btnDirectory.setOnClickListener {
+            val activity: Activity = context as Activity
+            if (PermissionGetter().isAllowedManageExternalStorage(activity)) {
+                setTargetDirectory()
+            } else {
+                AlertDialog.Builder(context)
+                    .setMessage("権限がないよ")
+                    .setPositiveButton("OK") { _, _ -> return@setPositiveButton }
+                    .show()
+            }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        this.setting = Setting(context)
+    }
+
+    private fun setTargetDirectory() {
+        val dialog = FileSelectionDialog(requireContext(), this)
+        var file = File(binding.txtDirectory.text.toString())
+        if (!file.exists()) file = File(Environment.getExternalStorageDirectory().path)
+        dialog.show(file)
     }
 
     /**
@@ -107,6 +146,11 @@ class FirstFragment : Fragment() {
                 return
             }
         }
+    }
+
+    override fun onFileSelect(file: File) {
+        binding.txtDirectory.text = file.absolutePath
+        writePreference()
     }
 
 }
