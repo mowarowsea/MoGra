@@ -26,14 +26,10 @@
     </string-array>
 
     <string name="auto_orient_none">自動回転なし</string>
-    <string name="auto_orient_horizontally_left90">横向き（縦長は左90度回転）</string>
-    <string name="auto_orient_horizontally_right90">横向き（縦長は右90度回転）</string>
     <string name="auto_orient_vertically_left90">縦向き（横長は左90度回転）</string>
     <string name="auto_orient_vertically_right90">縦向き（横長は右90度回転）</string>
     <string-array name="auto_orient">
         <item name="none">@string/auto_orient_none</item>
-        <item name="horizontally_left90">@string/auto_orient_horizontally_left90</item>
-        <item name="horizontally_right90">@string/auto_orient_horizontally_right90</item>
         <item name="vertically_left90">@string/auto_orient_vertically_left90</item>
         <item name="vertically_right90">@string/auto_orient_vertically_right90</item>
     </string-array>

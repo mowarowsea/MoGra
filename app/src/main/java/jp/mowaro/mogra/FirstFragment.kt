@@ -2,7 +2,6 @@ package jp.mowaro.mogra
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
@@ -14,16 +13,17 @@ import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import jp.mowaro.mogra.databinding.FragmentFirstBinding
-import layout.FileSelectionDialog
+import jp.mowaro.mogra.dialog.picker.directory.DirectoryPicker
+import jp.mowaro.mogra.dialog.picker.directory.OnSelectListener
+import jp.mowaro.mogra.util.PermissionGetter
+import jp.mowaro.mogra.util.Setting
 import java.io.File
 
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment(), FileSelectionDialog.OnFileSelectListener {
-    private lateinit var setting: Setting
-
+class FirstFragment : Fragment(), OnSelectListener {
     private var _binding: FragmentFirstBinding? = null
 
     // This property is only valid between onCreateView and
@@ -47,7 +47,7 @@ class FirstFragment : Fragment(), FileSelectionDialog.OnFileSelectListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        (activity as MainActivity).showSupportActionBar()
 
         binding.btnStart.setOnClickListener {
             val activity: Activity = context as Activity
@@ -78,13 +78,8 @@ class FirstFragment : Fragment(), FileSelectionDialog.OnFileSelectListener {
         _binding = null
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        this.setting = Setting(context)
-    }
-
     private fun setTargetDirectory() {
-        val dialog = FileSelectionDialog(requireContext(), this)
+        val dialog = DirectoryPicker(requireContext(), this)
         var file = File(binding.txtDirectory.text.toString())
         if (!file.exists()) file = File(Environment.getExternalStorageDirectory().path)
         dialog.show(file)
@@ -120,19 +115,19 @@ class FirstFragment : Fragment(), FileSelectionDialog.OnFileSelectListener {
      * 設定書き込み
      */
     private fun writePreference() {
-        setting.orderBy = binding.spnOrderBy.selectedItem.toString()
-        setting.orient = binding.spnOrient.selectedItem.toString()
-        setting.directory = binding.txtDirectory.text.toString()
-        setting.commit()
+        Setting.orderBy = binding.spnOrderBy.selectedItem.toString()
+        Setting.orient = binding.spnOrient.selectedItem.toString()
+        Setting.directory = binding.txtDirectory.text.toString()
+        Setting.commit()
     }
 
     /**
      * 設定読み込み
      */
     private fun readPreference() {
-        setSelectionByText(binding.spnOrderBy, setting.orderBy)
-        setSelectionByText(binding.spnOrient, setting.orient)
-        binding.txtDirectory.text = setting.directory
+        setSelectionByText(binding.spnOrderBy, Setting.orderBy)
+        setSelectionByText(binding.spnOrient, Setting.orient)
+        binding.txtDirectory.text = Setting.directory
     }
 
     /**
@@ -148,9 +143,8 @@ class FirstFragment : Fragment(), FileSelectionDialog.OnFileSelectListener {
         }
     }
 
-    override fun onFileSelect(file: File) {
+    override fun onSelect(file: File) {
         binding.txtDirectory.text = file.absolutePath
         writePreference()
     }
-
 }

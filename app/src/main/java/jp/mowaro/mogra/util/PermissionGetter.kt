@@ -1,4 +1,4 @@
-package jp.mowaro.mogra
+package jp.mowaro.mogra.util
 
 import android.app.Activity
 import android.content.Intent

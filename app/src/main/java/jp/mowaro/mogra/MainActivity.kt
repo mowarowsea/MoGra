@@ -5,9 +5,11 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
+import jp.mowaro.mogra.util.Setting
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,7 +19,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
             super.onCreate(savedInstanceState)
+            Setting.initialize(this)
             setContentView(R.layout.activity_main)
+
+            initializeActionBar()
+
         } catch (e: java.lang.Exception) {
             AlertDialog.Builder(this)
                 .setTitle("Exception")
@@ -26,6 +32,33 @@ class MainActivity : AppCompatActivity() {
                 .show()
         }
     }
+
+    /**
+     * ActionBarを初期化する
+     *
+     * toolbarを設定せずに、単に"supportActionBar()?.hide"とするサンプルは多いが、これではsupportActionBarがnullを返しうまくいかなかった
+     * 参考：https://note.com/nttrtech/n/n9e597461eec9
+     */
+    private fun initializeActionBar() {
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+    }
+
+    /**
+     * ActionBarを隠す
+     */
+    fun hideSupportActionBar() {
+        supportActionBar?.hide()
+    }
+
+    /**
+     * ActionBarを表示する
+     */
+    fun showSupportActionBar() {
+        supportActionBar?.show()
+    }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
